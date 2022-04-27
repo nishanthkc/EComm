@@ -1,0 +1,8 @@
+<h1>This is First Page</h1>
+<a href="{% url 'exp:home' %}">Go to Home</a>
+{% if user.is_authenticated %}
+<p>You are logged in</p>
+{% else %}
+<p>You are NOT logged in</p>
+{% endif %}
+<p>{{ user.username }}</p>

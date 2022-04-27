@@ -37,7 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'exp.contrib.app',
+    'exp.apps.ExpConfig',
+
+    # Extensions - installed with pip3 / requirements.txt
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -74,10 +77,24 @@ WSGI_APPLICATION = 'EComm.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': BASE_DIR / 'db.sqlite3',
+#    }
+#}
+
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'EComm',
+        'USER': 'root',
+        'PASSWORD': 'root1234',
+        #'HOST': 'drchuck.mysql.pythonanywhere-services.com',
+         'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        },
     }
 }
 
@@ -124,3 +141,5 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+#APPEND_SLASH=False
