@@ -1,5 +1,15 @@
 <h1>This is First Page</h1>
-<a href="{% url 'exp:home' %}">Go to Home</a>
+<p><a href="{% url 'exp:home' %}">Go to Home</a></p>
+<p><a href="{% url 'exp:aboutus' %}">About Us</a></p>
+
+{% if catg %}
+{% for category in catg%}
+<h3> {{category.name}} </h3>
+<h4> {{category.description}} </h4>
+<img src={{category.image.url}} height="100px" width="100px">
+{% endfor %}
+{% endif %}
+
 {% if user.is_authenticated %}
 <p>You are logged in</p>
 {% else %}

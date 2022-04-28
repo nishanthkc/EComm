@@ -4,6 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
+from .models import Category, Product
 
 # Create your views here.
 class HomeView(LoginRequiredMixin, View):
@@ -14,7 +15,10 @@ class HomeView(LoginRequiredMixin, View):
 
 class FirstView(View):
     def get(self, request):
-        return render(request, 'exp/first.html')
+        catg = Category.objects.all()
+        prod = Product.objects.all()
+        ctx = {'catg':catg, 'prod':prod}
+        return render(request, 'exp/first.html', ctx)
     def post(self, request):
         return render()
 
@@ -37,3 +41,7 @@ class SignUp(View):
         #messages.success(request, 'your acc has been successfully created.')
         #myuser.is_active=False
         return redirect(reverse_lazy('exp:first'))
+
+class AboutUs(View):
+    def get(self, request):
+        return render(request, 'exp/aboutus.html')
