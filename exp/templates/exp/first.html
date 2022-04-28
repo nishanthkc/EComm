@@ -4,9 +4,7 @@
 
 {% if catg %}
 {% for category in catg%}
-<h3> {{category.name}} </h3>
-<h4> {{category.description}} </h4>
-<img src={{category.image.url}} height="100px" width="100px">
+<a href="{% url 'exp:productpage' category.id %}"><p><img src={{category.image.url}} height="50px" width="50px"><b>{{category.name}}</b>: {{category.description}}</p></a>
 {% endfor %}
 {% endif %}
 

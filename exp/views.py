@@ -1,3 +1,4 @@
+from unicodedata import category
 from django.shortcuts import render
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -45,3 +46,9 @@ class SignUp(View):
 class AboutUs(View):
     def get(self, request):
         return render(request, 'exp/aboutus.html')
+
+class ProductPage(View):
+    def get(self, request, pk):
+        products = Product.objects.filter(category=pk)
+        ctx = {'products':products}
+        return render(request, 'exp/productpage.html', ctx)
