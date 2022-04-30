@@ -47,8 +47,16 @@ class AboutUs(View):
     def get(self, request):
         return render(request, 'exp/aboutus.html')
 
-class ProductPage(View):
+class ProductList(View):
     def get(self, request, pk):
         products = Product.objects.filter(category=pk)
         ctx = {'products':products}
-        return render(request, 'exp/productpage.html', ctx)
+        return render(request, 'exp/product_list.html', ctx)
+
+
+class ProductDetail(View):
+    def get(self, request, pk):
+        #products = Product.objects.filter(category=pk)
+        my_product = Product.objects.get(pk=pk)
+        ctx = {'my_product':my_product}
+        return render(request, 'exp/product_detail.html', ctx)

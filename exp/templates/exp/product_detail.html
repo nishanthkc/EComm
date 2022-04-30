@@ -1,0 +1,9 @@
+{% if my_product %}
+
+<p><img src={{my_product.product_image.url}} height="200px" width="200px"><b>{{my_product.product_name}}</b>: {{my_product.product_desciption}}</p>
+<p>Price : {{ my_product.selling_price }}</p>
+<button><a href="#">Add to Cart</a></button><br>
+---------------------------------------------
+{% else %}
+<p>no products</p>
+{% endif %}
