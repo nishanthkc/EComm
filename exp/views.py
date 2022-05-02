@@ -60,3 +60,10 @@ class ProductDetail(View):
         my_product = Product.objects.get(pk=pk)
         ctx = {'my_product':my_product}
         return render(request, 'exp/product_detail.html', ctx)
+
+
+class TestView(View):
+    def get(self, request):
+        return render(request, 'exp/test.html')
+
+        

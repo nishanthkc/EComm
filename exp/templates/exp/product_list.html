@@ -1,7 +1,7 @@
 {% if products %}
 {% for product in products %}
 
-<p><a href="{% url 'exp:product_detail' product.id %}"><img src={{product.product_image.url}} height="50px" width="50px"><b>{{product.product_name}}</b></a>: {{product.product_desciption}}</p>
+<p><a href="{% url 'exp:product_detail' product.id %}"><img src={{product.product_image_1.url}} height="50px" width="50px"><b>{{product.product_name}}</b></a>: {{product.product_desciption}}</p>
 <p>Price : {{ product.selling_price }}</p>
 ---------------------------------------------
 {% endfor %}

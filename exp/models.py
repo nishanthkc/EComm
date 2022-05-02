@@ -28,7 +28,11 @@ class Category(models.Model):
 class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     product_name = models.CharField(max_length=100, null=False, blank=False)
-    product_image = models.ImageField(upload_to=get_file_path, null=True, blank=True)
+    product_image_1 = models.ImageField(upload_to=get_file_path, null=True, blank=True)
+    product_image_2 = models.ImageField(upload_to=get_file_path, null=True, blank=True)
+    product_image_3 = models.ImageField(upload_to=get_file_path, null=True, blank=True)
+    product_image_4= models.ImageField(upload_to=get_file_path, null=True, blank=True)
+    product_image_5 = models.ImageField(upload_to=get_file_path, null=True, blank=True)
     product_desciption = models.TextField(null=False, blank=False)
     original_price = models.FloatField(null=False, blank=False)
     selling_price = models.FloatField(null=False, blank=False)
