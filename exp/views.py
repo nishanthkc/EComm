@@ -64,6 +64,9 @@ class ProductDetail(View):
 
 class TestView(View):
     def get(self, request):
-        return render(request, 'exp/test.html')
+        catg = Category.objects.all()
+        prod = Product.objects.all()
+        ctx = {'catg':catg, 'prod':prod}
+        return render(request, 'exp/test.html', ctx)
 
         

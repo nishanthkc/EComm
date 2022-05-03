@@ -148,7 +148,42 @@
       <img src="{% static 'exp/images/hero-banner.png' %}" alt="hero-banner" class="hero-banner" />
     </div>
 
-    <!-- Products -->
+
+    {% for cat in catg %}
+    <!-- Category -->
+    <div class="product-headings">
+      <p class="primary-heading">{{ cat.name }}</p>
+      <p>--------</p>
+      <p class="secondary-heading">{{ cat.description }}</p>
+    </div>
+
+    <!-- product buttons -->
+    <div class="product-buttons">
+      <a href="#">Henley T-Shirts</a>
+      <a href="#">Crew Neck T-Shirts</a>
+      <a href="#">Polo T-Shirts</a>
+    </div>
+    
+    <div class="product-container">
+      {% for product in prod %}
+      {% if product.category == cat %}
+        <div class="card">
+          <a href=""
+            ><img src="{{product.product_image_1.url}}" alt="card-preview" class="card-image"
+          /></a>
+          <p class="primary-des">{{ product.product_name }}</p>
+          <p class="secondary-des">Rs. {{ product.selling_price }}</p>
+        </div>
+
+
+      {% endif %}
+      {% endfor %}
+    </div>
+    
+    {% endfor %}
+
+
+    <!-- Category -->
     <div class="product-headings">
       <p class="primary-heading">Our T-Shirts</p>
       <p>--------</p>
