@@ -43,9 +43,6 @@ class SignUp(View):
         #myuser.is_active=False
         return redirect(reverse_lazy('exp:first'))
 
-class AboutUs(View):
-    def get(self, request):
-        return render(request, 'exp/aboutus.html')
 
 class ProductList(View):
     def get(self, request, pk):
@@ -66,7 +63,8 @@ class TestView(View):
     def get(self, request):
         catg = Category.objects.all()
         prod = Product.objects.all()
-        ctx = {'catg':catg, 'prod':prod}
+        trending = Product.objects.filter(product_trending = 1)
+        ctx = {'catg':catg, 'prod':prod, 'trending':trending}
         return render(request, 'exp/test.html', ctx)
 
         

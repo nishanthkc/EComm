@@ -41,6 +41,7 @@ class Product(models.Model):
     product_trending = models.BooleanField(default=False, help_text='0=default, 1=trending')
     created_at = models.DateTimeField(auto_now_add=True)
     
+    
 
     def __str__(self):
         return self.product_name

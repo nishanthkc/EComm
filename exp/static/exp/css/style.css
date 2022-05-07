@@ -244,7 +244,9 @@ html {
   gap: 2rem;
   list-style: none;
 }
+
 .foot-right ul a {
   text-decoration: none;
   color: black;
 }
+
