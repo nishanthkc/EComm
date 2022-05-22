@@ -6,6 +6,8 @@ from django.contrib.auth.models import User
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from .models import Category, Product
+from django.http import JsonResponse
+import time
 
 # Create your views here.
 class HomeView(LoginRequiredMixin, View):
@@ -67,4 +69,20 @@ class TestView(View):
         ctx = {'catg':catg, 'prod':prod, 'trending':trending}
         return render(request, 'exp/test.html', ctx)
 
+
+class Testing(View):
+    def get(self, request):
+        return render(request, 'exp/testing.html')
+
+def jsonfun(request):
+    time.sleep(2)
+    a = []
+    for i in range(100):
+        a.append(i)
+    stuff = {
+        'first':'first thing',
+        'second':'second thing',
+        'a':a
+    }
+    return JsonResponse(stuff)
         

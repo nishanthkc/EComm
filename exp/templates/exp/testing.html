@@ -1,0 +1,106 @@
+{% load static %}
+<html>
+    <head>
+        <style>
+            #divv{
+                background-color: aqua;
+                position: fixed;
+                right: 0%;
+                top: 0%;
+                z-index: 10;
+            }
+            #right{
+                width: 30%;
+                background-color: bisque;
+                position: fixed;
+                right: 0%;
+                top: 0%;
+                height: 100%;
+                display: none;
+                z-index: 10;
+            }
+            #close{
+                background-color:burlywood;
+                position: fixed;
+                right: 0%;
+                top: 0%;
+                z-index: 1;
+            }
+            #search_bar input[type=text]{
+                width:300px;
+                height:25px;
+                border-radius:25px;
+                border: none;
+                
+            }
+            #search{
+                position: relative;
+                left: 0%;
+                top: 0%;
+            }
+
+        </style>
+    </head>
+    <body>
+        <p>Here is some awesome content</p>
+        <p>this is a magical list</p>
+        <p><a href="#" id="clicked">Click here</a></p>
+        <ul id="the_list">
+            <li>this is 1</li>
+        </ul>
+
+        <p><a href="#" id="clickkkk">Click here</a> to see a magical picture</p>
+        <img src="{% static 'exp/images/hero-banner.png' %}" height="50px" style="display:none;" id="magic"> 
+        
+        <p><a href="#" id="lol">Click here</a> to see a magical div</p>
+        <div style="display: none; background-color: beige;" id="magic_div">
+            <p> This is a magical div </p>
+        </div>
+        <p id="back">last thing</p>
+        <div id="divv"><a href="#" id="come_back">Click</a></div>
+        <div id="right">
+            <div id="close">
+                <a href="#" id="click_close">Close</a>
+            </div>
+            <div id="search">
+                SEARCH OUR SITE
+            </div>
+            <hr>
+            <div id="search_bar">
+                <form action="#">
+                    <input type="text" placeholder="Search for products" name="search_bar">
+                </form>
+            </div>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+        <script type="text/javascript">
+            count = 1;
+            $(document).ready(function(){
+                console.log('jquery started');
+                $('#clicked').on('click', function(){
+                    count++;
+                    $('#the_list').append('<li>this is '+count+'</li>');
+                    
+                });
+                $('#clickkkk').on('click', function(){
+                    $('#magic').toggle(500);
+                });
+                $('#lol').on('click', function(){
+                    $('#magic_div').toggle(500);
+                });
+                $.getJSON('/jsonfun', function(data){
+                    $('#back').html(data.first);
+                });
+                $('#come_back').on('click', function(){
+                    $('#right').toggle(500);
+                    //$('body').css('background-color','grey');
+                });
+                $('#click_close').on('click', function(){
+                    $('#right').toggle(500);
+                    //$('body').css('background-color','white');
+                });
+            });
+        </script>
+    </body>
+</html>
