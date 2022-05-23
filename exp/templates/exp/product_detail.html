@@ -30,7 +30,7 @@
 
                     $('#come').html('ID is '+prod_id+' and price is '+prod_s_price)
                     console.log('clicked')
-                    
+
                     $.ajax({
                         method: 'POST',
                         url: '../add_to_cart',
@@ -40,7 +40,8 @@
                             csrfmiddlewaretoken: token 
                         },
                         dataType: 'dataType',
-                        success: function(response) {
+                        success: function (response) {
+                            console.log('response')
                             console.log(response.status)
                         }
                     });
