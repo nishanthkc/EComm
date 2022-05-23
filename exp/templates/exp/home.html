@@ -1,0 +1,62 @@
+{% extends "exp/test.html" %}
+{% load static %}
+
+{% block content %}
+
+<!-- Hero banner --><!-- Hero banner --><!-- Hero banner --><!-- Hero banner --><!-- Hero banner -->
+<div>
+    <img src="{% static 'exp/images/hero-banner.png' %}" alt="hero-banner" class="hero-banner" />
+  </div>
+
+
+  <!-- Category --><!-- Category --><!-- Category --><!-- Category --><!-- Category --><!-- Category --><!-- Category -->
+  {% for cat in catg %}
+  <!-- Category -->
+  <div class="product-headings">
+    <a href="{% url 'exp:product_list' cat.id %}" class="no_style"><p class="primary-heading">{{ cat.name }}</p></a>
+    <p>--------</p>
+    <p class="secondary-heading">{{ cat.description }}</p>
+  </div>
+
+  <!-- product buttons -->
+  <div class="product-buttons">
+    <a href="#">Henley T-Shirts</a>
+    <a href="#">Crew Neck T-Shirts</a>
+    <a href="#">Polo T-Shirts</a>
+  </div>
+  
+  <div class="product-container">
+    {% for product in prod %}
+    {% if product.category == cat %}
+      <div class="card">
+        <a href="{% url 'exp:product_detail' product.id %}"
+          ><img src="{{product.product_image_1.url}}" alt="card-preview" class="card-image"
+        /></a>
+        <p class="primary-des">{{ product.product_name }}</p>
+        <p class="secondary-des">Rs. {{ product.selling_price }}</p>
+      </div>
+    {% endif %}
+    {% endfor %}
+  </div>
+  {% endfor %}
+
+
+  <!-- Trending Products --><!-- Trending Products --><!-- Trending Products --><!-- Trending Products -->
+  <div class="product-headings">
+    <p class="primary-heading">Trending Products</p>
+    <p>--------</p>
+    <p class="secondary-heading">Trending Products in our Website</p>
+  </div>
+  <div class="product-container">
+    {% for item in trending %}
+      <div class="card">
+        <a href=""
+          ><img src="{{item.product_image_1.url}}" alt="card-preview" class="card-image"
+        /></a>
+        <p class="primary-des">{{ item.product_name }}</p>
+        <p class="secondary-des">Rs. {{ item.selling_price }}</p>
+      </div>
+    {% endfor %}
+  </div>
+
+  {% endblock %}

@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from .models import Category, Product
+from .models import Category, Product, Cart
 from django.http import JsonResponse
 import time
 
@@ -67,7 +67,41 @@ class TestView(View):
         prod = Product.objects.all()
         trending = Product.objects.filter(product_trending = 1)
         ctx = {'catg':catg, 'prod':prod, 'trending':trending}
-        return render(request, 'exp/test.html', ctx)
+        return render(request, 'exp/home.html', ctx)
+
+
+class ExtraPageView(View):
+    def get(self, request):
+        return render(request, 'exp/extra_page.html')
+
+def add_to_cart(request):
+    if request.method == 'POST':
+        if request.user.is_authenticated:
+            prod_id = int(request.POST.get('prod_id'))
+            quantity = 1
+
+            product_check = Product.objects.get(pk=prod_id)
+            if product_check:
+                if Cart.objects.filter(user=request.user, product=product_check):
+                    return JsonResponse({'status':'Already in cart'})
+                else:
+                    Cart.objects.create(user=request.user, product=product_check, product_qty=quantity)
+                    return JsonResponse({'status':'Added to cart'})
+            
+            else:
+                return JsonResponse({'status':'no such product found'})    
+
+
+        else:
+            return JsonResponse({'status':'Login to continue'})
+    return redirect('/')
+        
+
+
+
+
+
+
 
 
 class Testing(View):
