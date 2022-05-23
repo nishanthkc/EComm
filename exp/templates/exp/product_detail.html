@@ -12,6 +12,7 @@
         <form action="#">
             {% csrf_token %}
             <input type="hidden" value="{{my_product.id}}" id="prod_id">
+            <p><input id="dec" type="button" value="-"><input id="product_qty" type="button" value="1"><input id="inc" type="button" value="+"></p>
             <input type="hidden" value="{{my_product.selling_price}}" id="prod_s_price">
             <button><a href="#" id="add_to_cart">Add to Cart</a></button><br>
         </form>
@@ -27,6 +28,7 @@
                     var prod_id = $('#prod_id').val();
                     var prod_s_price = $('#prod_s_price').val();
                     var token = $('input[name=csrfmiddlewaretoken]').val();
+                    var product_qty = parseInt($('#product_qty').val())
 
                     $('#come').html('ID is '+prod_id+' and price is '+prod_s_price)
                     console.log('clicked')
@@ -37,16 +39,27 @@
                         data: {
                             'prod_id': prod_id,
                             'prod_s_price': prod_s_price,
+                            'product_qty': product_qty,
                             csrfmiddlewaretoken: token 
                         },
-                        dataType: 'dataType',
                         success: function (response) {
                             console.log('response')
                             console.log(response.status)
+                            alert(response.status)
                         }
                     });
 
                 });
+
+                $('#inc').on('click', function(){
+                    var qty_now = parseInt($('#product_qty').val())+1
+                    $('#product_qty').val(qty_now)
+                });
+                $('#dec').on('click', function(){
+                    var qty_now = parseInt($('#product_qty').val())-1
+                    $('#product_qty').val(qty_now)
+                });
+
             });
         </script>
     </body>

@@ -70,23 +70,28 @@ class TestView(View):
         return render(request, 'exp/home.html', ctx)
 
 
-class ExtraPageView(View):
+class CartView(LoginRequiredMixin, View):
     def get(self, request):
-        return render(request, 'exp/extra_page.html')
+        cart = Cart.objects.filter(user=request.user)
+        ctx = {'cart':cart}
+        return render(request, 'exp/cart.html', ctx)
 
 def add_to_cart(request):
     if request.method == 'POST':
         if request.user.is_authenticated:
             prod_id = int(request.POST.get('prod_id'))
-            quantity = 1
+            quantity = int(request.POST.get('product_qty'))
 
             product_check = Product.objects.get(pk=prod_id)
             if product_check:
                 if Cart.objects.filter(user=request.user, product=product_check):
                     return JsonResponse({'status':'Already in cart'})
                 else:
-                    Cart.objects.create(user=request.user, product=product_check, product_qty=quantity)
-                    return JsonResponse({'status':'Added to cart'})
+                    if product_check.quantity>quantity:
+                        Cart.objects.create(user=request.user, product=product_check, product_qty=quantity)
+                        return JsonResponse({'status':'Added to cart'})
+                    else:    
+                        return JsonResponse({'status':'Only '+str(product_check.quantity)+' units available'})
             
             else:
                 return JsonResponse({'status':'no such product found'})    
@@ -94,6 +99,21 @@ def add_to_cart(request):
 
         else:
             return JsonResponse({'status':'Login to continue'})
+    return redirect('/')
+
+def remove_from_cart(request):
+    if request.method == 'POST':
+        prod_id = int(request.POST.get('prod_id'))
+        product_check = Product.objects.get(pk=prod_id)
+        if product_check:
+            if Cart.objects.filter(user=request.user, product=product_check):
+                Cart.objects.filter(user=request.user, product=product_check).delete()
+                return JsonResponse({'status':'Product removed from the cart'})
+            else:
+                return JsonResponse({'status':'Product not in the cart'})
+        else:    
+            return JsonResponse({'status':'No such product'})
+    
     return redirect('/')
         
 

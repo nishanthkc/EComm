@@ -73,7 +73,13 @@
                 </form>
             </div>
         </div>
-        
+        <p><input id="dec" type="button" value="-"><input id="qty" type="button" value="1"><input id="inc" type="button" value="+"></p>
+
+
+
+
+
+
         <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
         <script type="text/javascript">
             count = 1;
@@ -101,8 +107,15 @@
                     $('#right').toggle(200);
                     $('body').css('background-color','white');
                 });
-                
-                
+                $('#inc').on('click', function(){
+                    var qty_now = parseInt($('#qty').val())+1
+                    $('#qty').val(qty_now)
+                });
+                $('#dec').on('click', function(){
+                    var qty_now = parseInt($('#qty').val())-1
+                    $('#qty').val(qty_now)
+                });
+
             });
         </script>
     </body>
