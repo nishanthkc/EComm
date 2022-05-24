@@ -19,8 +19,10 @@ urlpatterns = [
 
     path('main/add_to_cart', views.add_to_cart, name='add_to_cart'),
     path('cart/remove_from_cart', views.remove_from_cart, name='remove_from_cart'),
+    path('cart/move_to_wishlist_from_cart', views.move_to_wishlist_from_cart, name='move_to_wishlist_from_cart'),
     path('main/move_to_wishlist', views.move_to_wishlist, name='move_to_wishlist'),
     path('wishlist/remove_from_wishlist', views.remove_from_wishlist, name='remove_from_wishlist'),
+    path('wishlist/move_to_cart_from_wishlist', views.move_to_cart_from_wishlist, name='move_to_cart_from_wishlist'),
 
 
     path('testing/', views.Testing.as_view(), name='testing'),

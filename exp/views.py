@@ -144,11 +144,8 @@ def move_to_wishlist(request):
                         return JsonResponse({'status':'Added to wishlist'})
                     else:    
                         return JsonResponse({'status':'Only '+str(product_check.quantity)+' units available'})
-            
             else:
                 return JsonResponse({'status':'no such product found'})    
-
-
         else:
             return JsonResponse({'status':'Login to continue'})
     return redirect('/')
@@ -166,10 +163,43 @@ def remove_from_wishlist(request):
                 return JsonResponse({'status':'Product not in the Wishlist'})
         else:    
             return JsonResponse({'status':'No such product'})
-    
     return redirect('/')
 
 
+def move_to_cart_from_wishlist(request):
+    if request.method == 'POST':
+        if request.user.is_authenticated:
+            prod_id = int(request.POST.get('prod_id'))
+            my_product = Product.objects.get(pk=prod_id)
+            wishlist_check = Wishlist.objects.get(product=my_product)
+            if wishlist_check:
+                if Wishlist.objects.filter(user=request.user, product=my_product):
+                    Cart.objects.create(user=request.user, product=my_product, product_qty=wishlist_check.product_qty)
+                    Wishlist.objects.get(user=request.user, product=my_product).delete()
+                    return JsonResponse({'status':'moved from wishlist to cart'})                
+            else:
+                return JsonResponse({'status':'no such product found'})    
+        else:
+            return JsonResponse({'status':'Login to continue'})
+    return redirect('/')
+
+
+def move_to_wishlist_from_cart(request):
+    if request.method == 'POST':
+        if request.user.is_authenticated:
+            prod_id = int(request.POST.get('prod_id'))
+            my_product = Product.objects.get(pk=prod_id)
+            cart_check = Cart.objects.get(product=my_product)
+            if cart_check:
+                if Cart.objects.filter(user=request.user, product=my_product):
+                    Wishlist.objects.create(user=request.user, product=my_product, product_qty=cart_check.product_qty)
+                    Cart.objects.get(user=request.user, product=my_product).delete()
+                    return JsonResponse({'status':'moved from wishlist to cart'})                
+            else:
+                return JsonResponse({'status':'no such product found'})    
+        else:
+            return JsonResponse({'status':'Login to continue'})
+    return redirect('/')
 
 
 

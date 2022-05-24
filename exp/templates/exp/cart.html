@@ -12,6 +12,7 @@
     <!-- <input type="hidden" id="prod_id_{{item.product.id}}" value="{{ item.product.id }}"> -->
     <input type="hidden" id="prod_id" value="{{ item.product.id }}">
     <button><a href="#" class="remove_from_cart">Remove from Cart</a></button><br>
+    <button><a href="#" class="move_to_wishlist_from_cart">Move to Wishlist</a></button><br>
 </form>
 {% endfor %}
 {% else %}
@@ -38,7 +39,30 @@
                             location.reload()
                         }
             });
+            
         });
+        $('.move_to_wishlist_from_cart').on('click', function(){
+            var prod_id = $(this).closest('.product_data').find('#prod_id').val()
+            var token = $('input[name=csrfmiddlewaretoken]').val();
+            console.log(prod_id)
+
+            $.ajax({
+                        method: 'POST',
+                        url: 'move_to_wishlist_from_cart',
+                        data: {
+                            'prod_id': prod_id,
+                            csrfmiddlewaretoken: token 
+                        },
+                        success: function (response) {
+                            console.log('response')
+                            console.log(response.status)
+                            alert(response.status)
+                            location.reload()
+                        }
+            });
+            
+        });
+
         
         
     });
