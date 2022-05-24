@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from .models import Category, Product, Cart
+from .models import Category, Product, Cart, Wishlist
 from django.http import JsonResponse
 import time
 
@@ -76,6 +76,17 @@ class CartView(LoginRequiredMixin, View):
         ctx = {'cart':cart}
         return render(request, 'exp/cart.html', ctx)
 
+class WishlistView(LoginRequiredMixin, View):
+    def get(self, request):
+        wishlist = Wishlist.objects.filter(user=request.user)
+        ctx = {'wishlist':wishlist}
+        return render(request, 'exp/wishlist.html', ctx)
+
+
+
+
+
+
 def add_to_cart(request):
     if request.method == 'POST':
         if request.user.is_authenticated:
@@ -115,7 +126,48 @@ def remove_from_cart(request):
             return JsonResponse({'status':'No such product'})
     
     return redirect('/')
+
+
+def move_to_wishlist(request):
+    if request.method == 'POST':
+        if request.user.is_authenticated:
+            prod_id = int(request.POST.get('prod_id'))
+            quantity = int(request.POST.get('product_qty'))
+
+            product_check = Product.objects.get(pk=prod_id)
+            if product_check:
+                if Wishlist.objects.filter(user=request.user, product=product_check):
+                    return JsonResponse({'status':'Already in wishlist'})
+                else:
+                    if product_check.quantity>quantity:
+                        Wishlist.objects.create(user=request.user, product=product_check, product_qty=quantity)
+                        return JsonResponse({'status':'Added to wishlist'})
+                    else:    
+                        return JsonResponse({'status':'Only '+str(product_check.quantity)+' units available'})
+            
+            else:
+                return JsonResponse({'status':'no such product found'})    
+
+
+        else:
+            return JsonResponse({'status':'Login to continue'})
+    return redirect('/')
         
+
+def remove_from_wishlist(request):
+    if request.method == 'POST':
+        prod_id = int(request.POST.get('prod_id'))
+        product_check = Product.objects.get(pk=prod_id)
+        if product_check:
+            if Wishlist.objects.filter(user=request.user, product=product_check):
+                Wishlist.objects.filter(user=request.user, product=product_check).delete()
+                return JsonResponse({'status':'Product removed from the Wishlist'})
+            else:
+                return JsonResponse({'status':'Product not in the Wishlist'})
+        else:    
+            return JsonResponse({'status':'No such product'})
+    
+    return redirect('/')
 
 
 

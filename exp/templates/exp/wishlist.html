@@ -2,31 +2,31 @@
 {% load static %}
 
 {% block content %}
-<h1>Cart Page</h1><br>
-{% if cart %}
-{% for item in cart %}
+<h1>Wishlist Page</h1><br>
+{% if wishlist %}
+{% for item in wishlist %}
 <h2>{{ item.product }}</h2>
 <h3>Quantity : {{ item.product_qty }}</h3>
 <form action="#" class="product_data">
     {% csrf_token %}
     <!-- <input type="hidden" id="prod_id_{{item.product.id}}" value="{{ item.product.id }}"> -->
     <input type="hidden" id="prod_id" value="{{ item.product.id }}">
-    <button><a href="#" class="remove_from_cart">Remove from Cart</a></button><br>
+    <button><a href="#" class="remove_from_wishlist">Remove from Wishlist</a></button><br>
 </form>
 {% endfor %}
 {% else %}
-<p>no items in your cart</p>
+<p>no items in your wishlist</p>
 {% endif %}
 <script type="text/javascript">
     $(document).ready(function(){
-        $('.remove_from_cart').on('click', function(){
+        $('.remove_from_wishlist').on('click', function(){
             var prod_id = $(this).closest('.product_data').find('#prod_id').val()
             var token = $('input[name=csrfmiddlewaretoken]').val();
             console.log(prod_id)
 
             $.ajax({
                         method: 'POST',
-                        url: 'remove_from_cart',
+                        url: 'remove_from_wishlist',
                         data: {
                             'prod_id': prod_id,
                             csrfmiddlewaretoken: token 
