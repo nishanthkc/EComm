@@ -1,0 +1,39 @@
+{% extends "exp/test.html" %}
+{% load static %}
+
+{% block content %}
+<h1>this is checkout page</h1>
+<form action="#">
+    <label>First Name</label>
+    <input type="text" placeholder=""><br><br>
+    <label>Last Name</label>
+    <input type="text" placeholder=""><br><br>
+    <label>Email</label>
+    <input type="email" placeholder=""><br><br>
+    <label>Phone</label>
+    <input type="text" placeholder=""><br><br>
+    <label>Address</label>
+    <textarea type="text" placeholder=""></textarea><br><br>
+    <label>City</label>
+    <input type="text" placeholder=""><br><br>
+    <label>State</label>
+    <input type="text" placeholder=""><br><br>
+    <label>Country</label>
+    <input type="text" placeholder=""><br><br>
+    <label>Pincode</label>
+    <input type="text" placeholder=""><br><br>
+
+    {% if cart %}
+    {% for item in cart %}
+    <p><img src="{{ item.product.product_image_1.url }}" height="50px">
+    {{ item.product.product_name }} --- Quantity: {{ item.product_qty }} --- Price: {{ item.product.selling_price }}</p>
+    {% endfor %}
+    <br><br>
+    <b><p>total price: {{ total_price }}</p></b>
+    <br><br>
+    <button><a href="#">Place Order</a></button><br>
+</form>
+{% else %}
+there are no products in your cart
+{% endif %}
+{% endblock %}

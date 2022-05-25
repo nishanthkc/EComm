@@ -94,6 +94,15 @@ class WomenView(View):
         ctx = {'products':products}
         return render(request, 'exp/women.html', ctx)
 
+class CheckoutView(LoginRequiredMixin, View):
+    def get(self, request):
+        total_price=0
+        cart = Cart.objects.filter(user=request.user)
+        for item in cart:
+            total_price += item.product.selling_price * item.product_qty
+        ctx = {'cart':cart, 'total_price':total_price}
+        return render(request, 'exp/checkout.html', ctx)
+
 
 
 

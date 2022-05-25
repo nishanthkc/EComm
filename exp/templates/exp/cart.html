@@ -15,6 +15,8 @@
     <button><a href="#" class="move_to_wishlist_from_cart">Move to Wishlist</a></button><br>
 </form>
 {% endfor %}
+<br>
+<button><a href="{% url 'exp:checkout' %}" class="go_to_checkout">Checkout</a></button><br>
 {% else %}
 <p>no items in your cart</p>
 {% endif %}
@@ -41,6 +43,7 @@
             });
             
         });
+
         $('.move_to_wishlist_from_cart').on('click', function(){
             var prod_id = $(this).closest('.product_data').find('#prod_id').val()
             var token = $('input[name=csrfmiddlewaretoken]').val();
@@ -63,8 +66,7 @@
             
         });
 
-        
-        
+
     });
 </script>
 {% endblock %}
