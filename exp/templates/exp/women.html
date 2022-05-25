@@ -1,0 +1,19 @@
+{% extends "exp/test.html" %}
+{% load static %}
+
+{% block content %}
+    <div class="product-headings">
+        <a href="#" class="no_style" style="color: black;text-decoration: none;"><p class="primary-heading">Women's Fashion</p></a>
+    </div>
+    <div class="product-container">
+        {% for product in products %}
+          <div class="card">
+            <a href="{% url 'exp:product_detail' product.id %}"
+              ><img src="{{product.product_image_1.url}}" alt="card-preview" class="card-image"
+            /></a>
+            <p class="primary-des">{{ product.product_name }}</p>
+            <p class="secondary-des">Rs. {{ product.selling_price }}</p>
+          </div>
+        {% endfor %}
+      </div>
+{% endblock %}

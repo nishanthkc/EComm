@@ -13,7 +13,7 @@
   {% for cat in catg %}
   <!-- Category -->
   <div class="product-headings">
-    <a href="{% url 'exp:product_list' cat.id %}" class="no_style"><p class="primary-heading">{{ cat.name }}</p></a>
+    <a href="{% url 'exp:product_list' cat.id %}" class="no_style"  style="color: black;text-decoration: none;"><p class="primary-heading">{{ cat.name }}</p></a>
     <p>--------</p>
     <p class="secondary-heading">{{ cat.description }}</p>
   </div>

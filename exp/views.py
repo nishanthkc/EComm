@@ -82,6 +82,19 @@ class WishlistView(LoginRequiredMixin, View):
         ctx = {'wishlist':wishlist}
         return render(request, 'exp/wishlist.html', ctx)
 
+class MenView(View):
+    def get(self, request):
+        products = Product.objects.filter(filter_tags='men')
+        ctx = {'products':products}
+        return render(request, 'exp/men.html', ctx)
+
+class WomenView(View):
+    def get(self, request):
+        products = Product.objects.filter(filter_tags='women')
+        ctx = {'products':products}
+        return render(request, 'exp/women.html', ctx)
+
+
 
 
 

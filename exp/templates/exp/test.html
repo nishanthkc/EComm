@@ -62,11 +62,12 @@
       </div>
       <div class="nav-left">
         <ul class="nav-lists">
-          <a href="#"><li>Men</li></a>
-          <a href="#"><li>Women</li></a>
+          <a href="{% url 'exp:men' %}"><li>Men</li></a>
+          <a href="{% url 'exp:women' %}"><li>Women</li></a>
+          <!-- 
           <a href="#"><li>T-shirts</li></a>
           <a href="#"><li>Wallets</li></a>
-          <a href="#"><li>Caps</li></a>
+          <a href="#"><li>Caps</li></a> -->
         </ul>
       </div>
       <a href="{% url 'exp:test' %}"><img src="{% static 'exp/images/logo.png' %}" alt="logo" class="logo-img" height="50px"/></a>

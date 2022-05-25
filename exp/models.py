@@ -38,6 +38,7 @@ class Product(models.Model):
     product_status = models.BooleanField(default=False, help_text='0=default, 1=hidden')
     product_trending = models.BooleanField(default=False, help_text='0=default, 1=trending')
     created_at = models.DateTimeField(auto_now_add=True)
+    filter_tags = models.CharField(max_length=100, null=False, blank=False)
     
     
 
