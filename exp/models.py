@@ -1,3 +1,4 @@
+from fnmatch import fnmatchcase
 from pyexpat import model
 from django.db import models
 from django.contrib.auth.models import User
@@ -57,3 +58,39 @@ class Wishlist(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     product_qty = models.IntegerField(null=False, blank=False)
     created_at = models.DateTimeField(auto_now_add=True)
+
+class Order(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    fname = models.CharField(max_length=100, null=False)
+    lname = models.CharField(max_length=100, null=False)
+    email = models.CharField(max_length=100, null=False)
+    phone = models.CharField(max_length=100, null=False)
+    address = models.TextField(null=False)
+    city = models.CharField(max_length=100, null=False)
+    state = models.CharField(max_length=100, null=False)
+    country = models.CharField(max_length=100, null=False)
+    pincode = models.CharField(max_length=100, null=False)
+    total_amount = models.FloatField(null=False)
+    payment_mode = models.CharField(max_length=100, null=False)
+    payment_id = models.CharField(max_length=100, null=True)
+    orders_status_options = (
+        ('Pending','Pending'),
+        ('Out for Shipping','Out for Shipping'),
+        ('Shipped','Shipped'),
+    )
+    status = models.CharField(max_length=100,choices=orders_status_options ,default='Pending')
+    tracking_number = models.CharField(max_length=100, null=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return '{} - {}'.format(self.id, self.tracking_number)
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    price = models.FloatField(null=False)
+    quantity = models.IntegerField(null=False)
+
+    def __str__(self):
+        return '{} - {}'.format(self.id, self.order)

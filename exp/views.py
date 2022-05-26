@@ -1,13 +1,15 @@
+from itertools import product
 from unicodedata import category
 from django.shortcuts import render
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.shortcuts import redirect
-from django.urls import reverse_lazy
-from .models import Category, Product, Cart, Wishlist
+from django.urls import reverse_lazy,reverse
+from .models import Category, Product, Cart, Wishlist, Order, OrderItem
 from django.http import JsonResponse
 import time
+import random
 
 # Create your views here.
 class HomeView(LoginRequiredMixin, View):
@@ -102,6 +104,58 @@ class CheckoutView(LoginRequiredMixin, View):
             total_price += item.product.selling_price * item.product_qty
         ctx = {'cart':cart, 'total_price':total_price}
         return render(request, 'exp/checkout.html', ctx)
+
+class PlaceOrderView(LoginRequiredMixin, View):
+    def post(self, request):
+        myorder = Order()
+        myorder.user = request.user
+        myorder.fname = request.POST.get('fname')
+        myorder.lname = request.POST.get('lname')
+        myorder.email = request.POST.get('email')
+        myorder.phone = request.POST.get('phone')
+        myorder.address = request.POST.get('address')
+        myorder.city = request.POST.get('city')
+        myorder.state = request.POST.get('state')
+        myorder.country = request.POST.get('country')
+        myorder.pincode = request.POST.get('pincode')
+
+        total_amt = 0
+        for item in Cart.objects.filter(user=request.user):
+            total_amt += item.product.selling_price * item.product_qty
+        myorder.total_amount = total_amt
+        myorder.payment_mode = request.POST.get('payment_mode')
+
+        track_no = 'payment_id_'+str(random.randint(111111,999999))
+        while Order.objects.filter(tracking_number=track_no) is None:
+            track_no = 'payment_id_'+str(random.randint(111111,999999))
+        myorder.tracking_number = track_no
+        
+        myorder.save()
+
+        order_items = Cart.objects.filter(user=request.user)
+        for item in order_items:
+            OrderItem.objects.create(
+                order = myorder,
+                product = item.product,
+                price = item.product.selling_price,
+                quantity = item.product_qty
+            )
+            
+            ordered_product = Product.objects.get(pk=item.product.id)
+            ordered_product.quantity -= item.product_qty
+            ordered_product.save()
+
+        Cart.objects.filter(user=request.user).delete()
+
+        placed_order = Order.objects.filter(user=request.user)
+        placed_order_items = []
+        for item in placed_order:
+            placed_order_items.append(OrderItem.objects.filter(order=item))
+        ctx = {'message':'Order Placed successfully','placed_order_items':placed_order_items}
+        
+        #add reverse redirect here
+        return render(request, 'exp/placed_order.html', ctx)
+        #return redirect(reverse('exp:place_order'))
 
 
 
