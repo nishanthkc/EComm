@@ -1,5 +1,6 @@
-{% extends "base_bootstrap.html" %}
-{% load crispy_forms_tags %}
+{% extends "exp/test.html" %}
+{% load static %}
+
 {% block content %}
 
 {% if form.errors %}
@@ -7,10 +8,29 @@
 {% endif %}
 
 <form method="post" action="{% url 'login' %}">
-{% csrf_token %}
-{{ form|crispy }}
-<input type="submit" class="btn btn-primary" value="Login"/>
-<button ><a href="{% url 'exp:signup' %}">Sign Up</a></button>
-<input type="hidden" name="next" value="{{ next }}" />
+  {% csrf_token %}
+
+  <div class="login-box">
+    {% for field in form %}
+      {% if field.html_name == 'username' %}
+        <div>
+          <p>Enter User ID</p>
+          <input name="{{ field.html_name }}" type="text" class="login-input"/> 
+        </div>
+      {% else %}
+        <div>
+          <p>Enter Password</p>
+          <input type="password" name="{{ field.html_name }}" type="text" class="login-input"/> 
+        </div>
+      {% endif %}
+    {% endfor %}
+    <div>
+      <input type="submit"class="login-buttons login" value="Login">
+      <a href="{% url 'exp:signup' %}" class="login-buttons">Sign Up</a>
+    </div>
+  </div>
+  
+
 </form>
+
 {% endblock %}

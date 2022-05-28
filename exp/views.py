@@ -31,21 +31,30 @@ class SignUp(View):
     def get(self, request):
         return render(request, 'exp/signup.html')
     def post(self, request):
-        username = request.POST['username']
-        fname = request.POST['fname']
-        lname = request.POST['lname']
-        email = request.POST['email']
-        pass1 = request.POST['pass1']
-        pass2 = request.POST['pass2']
+        try:
+            username = request.POST['username']
+            fname = request.POST['fname']
+            lname = request.POST['lname']
+            email = request.POST['email']
+            pass1 = request.POST['pass1']
+            pass2 = request.POST['pass2']
 
-        myuser = User.objects.create_user(username, email, pass1)
-        myuser.first_name = fname
-        myuser.last_name = lname
-        myuser.save()
+            myuser = User.objects.create_user(username, email, pass1)
+            myuser.first_name = fname
+            myuser.last_name = lname
+            myuser.save()
+
+            return redirect(reverse_lazy('login'))
+        except:
+            ctx = {'error':'all fields must be filled'}
+            return render(request, 'exp/signup.html', ctx)
+
+
+
 
         #messages.success(request, 'your acc has been successfully created.')
         #myuser.is_active=False
-        return redirect(reverse_lazy('exp:first'))
+        
 
 
 class ProductList(View):
@@ -154,7 +163,8 @@ class PlaceOrderView(LoginRequiredMixin, View):
         ctx = {'message':'Order Placed successfully','placed_order_items':placed_order_items}
         
         #add reverse redirect here
-        return render(request, 'exp/placed_order.html', ctx)
+        #return render(request, 'exp/placed_order.html', ctx)
+        return redirect(reverse_lazy('exp:place_order'))
         #return redirect(reverse('exp:place_order'))
 
 
@@ -247,12 +257,19 @@ def move_to_cart_from_wishlist(request):
         if request.user.is_authenticated:
             prod_id = int(request.POST.get('prod_id'))
             my_product = Product.objects.get(pk=prod_id)
-            wishlist_check = Wishlist.objects.get(product=my_product)
+            wishlist_check = Wishlist.objects.get(product=my_product, user = request.user)
             if wishlist_check:
                 if Wishlist.objects.filter(user=request.user, product=my_product):
-                    Cart.objects.create(user=request.user, product=my_product, product_qty=wishlist_check.product_qty)
-                    Wishlist.objects.get(user=request.user, product=my_product).delete()
-                    return JsonResponse({'status':'moved from wishlist to cart'})                
+                    if Cart.objects.get(user=request.user, product=my_product):
+                        adding_qty = Cart.objects.get(user=request.user, product=my_product)
+                        adding_qty.product_qty += wishlist_check.product_qty
+                        adding_qty.save()
+                        Wishlist.objects.get(user=request.user, product=my_product).delete()
+                        return JsonResponse({'status':'it is already in cart broooo so I add the quantity'})    
+                    else:
+                        Cart.objects.create(user=request.user, product=my_product, product_qty=wishlist_check.product_qty)
+                        Wishlist.objects.get(user=request.user, product=my_product).delete()
+                        return JsonResponse({'status':'moved from wishlist to cart'})                
             else:
                 return JsonResponse({'status':'no such product found'})    
         else:

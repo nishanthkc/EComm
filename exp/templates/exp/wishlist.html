@@ -2,18 +2,28 @@
 {% load static %}
 
 {% block content %}
-<h1>Wishlist Page</h1><br>
+<h2 class="wishlist-banner">View your wishlist products</h2>
 {% if wishlist %}
 {% for item in wishlist %}
-<h2>{{ item.product }}</h2>
-<h3>Quantity : {{ item.product_qty }}</h3>
-<form action="#" class="product_data">
-    {% csrf_token %}
-    <!-- <input type="hidden" id="prod_id_{{item.product.id}}" value="{{ item.product.id }}"> -->
-    <input type="hidden" id="prod_id" value="{{ item.product.id }}">
-    <button><a href="#" class="remove_from_wishlist">Remove from Wishlist</a></button><br>
-    <button><a href="#" class="move_to_cart_from_wishlist">Move to Cart</a></button><br>
-</form>
+<div class="wishlist-box">
+    <img src="{{ item.product.product_image_1.url }}" alt="Product-photo" class="wish-img" />
+    <div class="wishlist-text">
+    <a href="#" class="title">{{item.product.product_name}}</a>
+    <p>Rs. {{ item.product.selling_price | floatformat:0 }}</p>
+    <p>
+        {{item.product.product_desciption}}
+    </p>
+    </div>
+    <form action="#" class="product_data">
+        {% csrf_token %}
+        <input type="hidden" id="prod_id" value="{{ item.product.id }}">
+        <div class="wishlist-buttons">
+        <a href="#" class="remove_from_wishlist">Remove from Wishlist</a>
+        <a href="#" class="move_to_cart_from_wishlist">Add to Cart</a>
+        </div>
+    </form>
+</div>
+
 {% endfor %}
 {% else %}
 <p>no items in your wishlist</p>
