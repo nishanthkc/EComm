@@ -108,24 +108,43 @@
             />
           </svg>
         </a>
-
-        <a href="#">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="logo"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-            />
-          </svg>
-        </a>
-        
+        <!-- Account icon -->
+        {% if user.is_authenticated %}
+          <a href="{% url 'exp:user_profile' %}">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="logo"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+              />
+            </svg>
+          </a>
+        {% else %}
+          <a href="{% url 'login' %}">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="logo"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+              />
+            </svg>
+          </a>
+        {% endif %}
+        <!-- Wishlist icon -->
         <a href="{% url 'exp:wishlist' %}">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -142,7 +161,7 @@
             />
           </svg>
         </a>
-
+        <!-- Cart icon -->
         <a href="{% url 'exp:cart' %}">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -160,11 +179,7 @@
           </svg>
         </a>
 
-        {% if user.is_authenticated %}
-        <a href="{% url 'logout' %}?next={% url 'exp:test' %}">LOGOUT </a>
-        {% else %}
-        <a href="{% url 'login' %}">LOGIN </a>
-        {% endif %}
+        
 
 
       </div>

@@ -1,0 +1,7 @@
+{% extends "exp/test.html" %}
+{% load static %}
+
+{% block content %}
+<h1>Hi <b>{{ my_user }}</b></h1>
+<a href="{% url 'logout' %}?next={% url 'exp:test' %}">LOGOUT </a>
+{% endblock %}

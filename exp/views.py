@@ -176,6 +176,12 @@ class SearchView(View):
         ctx = {'searched_products':searched_products}
         return render(request, 'exp/searched_products.html', ctx)
 
+class UserProfileView(View):
+    def get(self, request):
+        my_user = request.user
+        ctx = {'my_user':my_user}
+        return render(request, 'exp/user_profile.html', ctx)
+
 
 
 

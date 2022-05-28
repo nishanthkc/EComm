@@ -21,7 +21,9 @@ urlpatterns = [
     path('collections/men', views.MenView.as_view(), name='men'),
     path('collections/women', views.WomenView.as_view(), name='women'),
     path('search/', views.SearchView.as_view(), name='searched_products'),
+    path('user_profile/', views.UserProfileView.as_view(), name='user_profile'),
 
+    
 
     path('main/add_to_cart', views.add_to_cart, name='add_to_cart'),
     path('cart/remove_from_cart', views.remove_from_cart, name='remove_from_cart'),
