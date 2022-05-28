@@ -1,3 +1,8 @@
+{% extends "exp/test.html" %}
+{% load static %}
+
+{% block content %}
+
 {% if products %}
 {% for product in products %}
 
@@ -8,3 +13,5 @@
 {% else %}
 <p>no products</p>
 {% endif %}
+
+{% endblock %}
