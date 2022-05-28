@@ -13,6 +13,25 @@
   <!-- CSS only -->
   </head>
   <body>
+
+    <div id="right">
+      <div id="close">
+          <a href="" id="click_close">Close</a>
+      </div>
+      <div id="search">
+          SEARCH OUR SITE
+      </div>
+      <hr>
+      <div id="search_bar">
+          <form action="{% url 'exp:searched_products' %}" method="post">
+            {% csrf_token %}
+              <input type="text" placeholder="Search for products" name="search_bar">
+              <input type="submit" value="Search">
+          </form>
+      </div>
+    </div>
+
+    
     <!-- Top banner --><!-- Top banner --><!-- Top banner --><!-- Top banner --><!-- Top banner -->
     <div class="top-banner">
       <div class="top-left">
@@ -72,7 +91,8 @@
       </div>
       <a href="{% url 'exp:test' %}"><img src="{% static 'exp/images/logo.png' %}" alt="logo" class="logo-img" height="50px"/></a>
       <div class="nav-right">
-        <a href="#">
+        <!-- Search icon -->
+        <a href="#" id="come_back">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="logo"
@@ -277,5 +297,16 @@
         </ul>
       </div>
     </div>
+
+    <script>
+      $('#come_back').on('click', function(){
+                    $('#right').toggle(200);
+                    //$('body').css('background-color','grey');
+      });
+      $('#click_close').on('click', function(){
+                    $('#right').toggle(200);
+                    //$('body').css('background-color','white');
+      });
+    </script>
   </body>
 </html>

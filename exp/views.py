@@ -168,6 +168,23 @@ class PlaceOrderView(LoginRequiredMixin, View):
         #return redirect(reverse('exp:place_order'))
 
 
+class SearchView(View):
+    def post(self, request):
+        search_word = request.POST.get('search_bar')
+        #products = Product.objects.filter(filter_tags='women')
+        searched_products = Product.objects.filter(product_name__contains=search_word)
+        ctx = {'searched_products':searched_products}
+        return render(request, 'exp/searched_products.html', ctx)
+
+
+
+
+
+
+
+
+
+
 
 
 
