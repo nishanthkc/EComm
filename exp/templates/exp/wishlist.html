@@ -10,6 +10,7 @@
     <div class="wishlist-text">
     <a href="#" class="title">{{item.product.product_name}}</a>
     <p>Rs. {{ item.product.selling_price | floatformat:0 }}</p>
+    <p>Quantity: {{ item.product_qty }}</p>
     <p>
         {{item.product.product_desciption}}
     </p>
