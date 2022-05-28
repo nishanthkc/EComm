@@ -3,5 +3,14 @@
 
 {% block content %}
 <h1>Hi <b>{{ my_user }}</b></h1>
-<a href="{% url 'logout' %}?next={% url 'exp:test' %}">LOGOUT </a>
+<h2>Your Orders so far are,</h2><br>
+{% for order in my_orders %}
+    <h2>{{ order }}<br></h2>
+    {% for order_item in all_order_items %}
+        {% if order_item.order == order %}
+            <b>{{ order_item }} <------></b>
+        {% endif %}
+    {% endfor %}
+{% endfor %}
+<br><a href="{% url 'logout' %}?next={% url 'exp:test' %}">LOGOUT </a>
 {% endblock %}

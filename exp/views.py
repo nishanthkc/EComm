@@ -185,7 +185,9 @@ class SearchView(View):
 class UserProfileView(View):
     def get(self, request):
         my_user = request.user
-        ctx = {'my_user':my_user}
+        my_orders = Order.objects.filter(user=request.user)
+        all_order_items = OrderItem.objects.all()
+        ctx = {'my_user':my_user, 'my_orders':my_orders, 'all_order_items':all_order_items}
         return render(request, 'exp/user_profile.html', ctx)
 
 
