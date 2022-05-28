@@ -1,0 +1,12 @@
+{% extends "exp/test.html" %}
+{% load static %}
+
+{% block content %}
+
+{% for item in all_products %}
+<p><a href="{% url 'exp:product_detail' item.id %}"><img src={{item.product_image_1.url}} height="50px" width="50px"><b>{{item.product_name}}</b></a>: {{item.product_desciption}}</p>
+<p>Price : {{ item.selling_price }}</p>
+---------------------------------------------
+{% endfor %}
+
+{% endblock %}
