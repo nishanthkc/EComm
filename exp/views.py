@@ -169,8 +169,8 @@ class PlaceOrderView(LoginRequiredMixin, View):
         ctx = {'message':'Order Placed successfully','placed_order_items':placed_order_items}
         
         #add reverse redirect here
-        #return render(request, 'exp/placed_order.html', ctx)
-        return redirect(reverse_lazy('exp:place_order'))
+        return render(request, 'exp/placed_order.html', ctx)
+        #return redirect(reverse_lazy('exp:place_order'))
         #return redirect(reverse('exp:place_order'))
 
 
@@ -289,13 +289,14 @@ def move_to_cart_from_wishlist(request):
             wishlist_check = Wishlist.objects.get(product=my_product, user = request.user)
             if wishlist_check:
                 if Wishlist.objects.filter(user=request.user, product=my_product):
-                    if Cart.objects.get(user=request.user, product=my_product):
-                        adding_qty = Cart.objects.get(user=request.user, product=my_product)
-                        adding_qty.product_qty += wishlist_check.product_qty
-                        adding_qty.save()
-                        Wishlist.objects.get(user=request.user, product=my_product).delete()
-                        return JsonResponse({'status':'it is already in cart broooo so I add the quantity'})    
-                    else:
+                    try:
+                        if Cart.objects.get(user=request.user, product=my_product):
+                            adding_qty = Cart.objects.get(user=request.user, product=my_product)
+                            adding_qty.product_qty += wishlist_check.product_qty
+                            adding_qty.save()
+                            Wishlist.objects.get(user=request.user, product=my_product).delete()
+                            return JsonResponse({'status':'it is already in cart broooo so I add the quantity'})    
+                    except:
                         Cart.objects.create(user=request.user, product=my_product, product_qty=wishlist_check.product_qty)
                         Wishlist.objects.get(user=request.user, product=my_product).delete()
                         return JsonResponse({'status':'moved from wishlist to cart'})                
