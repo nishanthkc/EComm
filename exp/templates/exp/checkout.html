@@ -2,6 +2,9 @@
 {% load static %}
 
 {% block content %}
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
 <h1>this is checkout page</h1>
 <form action="{% url 'exp:place_order' %}" method="post">
     {% csrf_token %}
@@ -33,10 +36,106 @@
     <br><br>
     <b><p>total price: {{ total_price }}</p></b>
     <br><br>
-    <input type="submit" value="Place Order"><br>
+    <input type="submit" value="COD | Place Order"><br><br>
+    <input type="button" value="Pay with RazorPay" class="paywithRazorPay" ><br>
 
 </form>
 {% else %}
 there are no products in your cart
 {% endif %}
+
+<script>
+    $('.paywithRazorPay').on('click', function(){
+
+        var fname = $("[name = 'fname']").val();
+        var lname = $("[name = 'lname']").val();
+        var email = $("[name = 'email']").val();
+        var phone = $("[name = 'phone']").val();
+        var address = $("[name = 'address']").val();
+        var city = $("[name = 'city']").val();
+        var state = $("[name = 'state']").val();
+        var country = $("[name = 'country']").val();
+        var pincode = $("[name = 'pincode']").val();
+        var token = $("[name = 'csrfmiddlewaretoken']").val();
+
+        if (fname == "" || lname == "" || email == "" || phone == "" || address == "" || city == "" || state == "" || country == "" || pincode == "" ) {
+
+            swal("Alert!", "All Fields are mandatory", "error");
+            return false;
+
+        }
+        else {
+
+            $.ajax({
+                        method: 'GET',
+                        url: 'proceed_to_pay',
+                        success: function (response) {
+                            //console.log(response)
+                            var options = {
+                            "key": "rzp_test_8pLSftq5hGOqON", // Enter the Key ID generated from the Dashboard
+                            "amount": 1*100,//response.total_price * 100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                            "currency": "INR",
+                            "name": "Nishanth Krishna",
+                            "description": "Thank You for buying from us",
+                            "image": "https://example.com/your_logo",
+                            //"order_id": "order_9A33XWu170gUtm", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+                            "handler": function (responseB){
+                                alert(responseB.razorpay_payment_id);
+                                data = {
+                                    'lname':lname,
+                                    'email':email,
+                                    'fname':fname,
+                                    'phone':phone,
+                                    'address':address,
+                                    'city':city,
+                                    'state':state,
+                                    'country':country,
+                                    'pincode':pincode,
+                                    'payment_mode':'Paid by RazorPay',
+                                    'payment_id':responseB.razorpay_payment_id,
+                                    csrfmiddlewaretoken:token,
+                                };
+                                $.ajax({
+                                    method: 'POST',
+                                    url: '../place_order',
+                                    data: data,
+                                    success: function (responseC) {
+                                        //swal("Congratulatoins!", responseC.razorpay_payment_id, "success").then((value) => {
+                                        swal("Congratulatoins!", "Paid by RazorPay", "success").then((value) => {
+                                        window.location.href = '../user_profile'
+                                        });
+                                    },
+                                });
+                            },
+                            "prefill": {
+                                "name": fname+' '+lname,
+                                "email": email,
+                                "contact": phone
+                            },
+                            "notes": {
+                                "address": "Razorpay Corporate Office"
+                            },
+                            "theme": {
+                                "color": "#3399cc"
+                            }
+                            };
+                            var rzp1 = new Razorpay(options);
+
+
+                            rzp1.open();
+
+                        }
+            });
+
+            
+
+        }
+
+        
+
+    });
+</script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 {% endblock %}
+

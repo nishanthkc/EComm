@@ -18,7 +18,7 @@ urlpatterns = [
     path('cart/', views.CartView.as_view(), name='cart'),
     path('checkout/', views.CheckoutView.as_view(), name='checkout'),
     path('wishlist/', views.WishlistView.as_view(), name='wishlist'),
-    path('place_order/', views.PlaceOrderView.as_view(), name='place_order'),
+    #path('lolplace_order/', views.PlaceOrderView.as_view(), name='lolplace_order'),
     path('collections/men', views.MenView.as_view(), name='men'),
     path('collections/women', views.WomenView.as_view(), name='women'),
     path('search/', views.SearchView.as_view(), name='searched_products'),
@@ -32,6 +32,8 @@ urlpatterns = [
     path('main/move_to_wishlist', views.move_to_wishlist, name='move_to_wishlist'),
     path('wishlist/remove_from_wishlist', views.remove_from_wishlist, name='remove_from_wishlist'),
     path('wishlist/move_to_cart_from_wishlist', views.move_to_cart_from_wishlist, name='move_to_cart_from_wishlist'),
+    path('checkout/proceed_to_pay', views.razorpaycheck, name='proceed_to_pay'),
+    path('place_order', views.defPlaceOrderView, name='place_order'),
 
 
     path('testing/', views.Testing.as_view(), name='testing'),

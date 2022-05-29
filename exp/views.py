@@ -139,6 +139,7 @@ class PlaceOrderView(LoginRequiredMixin, View):
             total_amt += item.product.selling_price * item.product_qty
         myorder.total_amount = total_amt
         myorder.payment_mode = request.POST.get('payment_mode')
+        myorder.payment_id = request.POST.get('payment_id')
 
         track_no = 'payment_id_'+str(random.randint(111111,999999))
         while Order.objects.filter(tracking_number=track_no) is None:
@@ -162,6 +163,10 @@ class PlaceOrderView(LoginRequiredMixin, View):
 
         Cart.objects.filter(user=request.user).delete()
 
+        pay_mode = request.POST.get('payment_mode')
+        if(pay_mode == 'Paid by RazorPay'):
+            return JsonResponse({'status':'Paid by RazorPay'})
+
         placed_order = Order.objects.filter(user=request.user)
         placed_order_items = []
         for item in placed_order:
@@ -172,6 +177,7 @@ class PlaceOrderView(LoginRequiredMixin, View):
         return render(request, 'exp/placed_order.html', ctx)
         #return redirect(reverse_lazy('exp:place_order'))
         #return redirect(reverse('exp:place_order'))
+    
 
 
 class SearchView(View):
@@ -327,6 +333,22 @@ def move_to_wishlist_from_cart(request):
     return redirect('/')
 
 
+def razorpaycheck(request):
+    
+    cart = Cart.objects.filter(user=request.user)
+    total_price = 0
+    for item in cart:
+        total_price += item.product.selling_price * item.product_qty
+    
+    return JsonResponse({
+        'total_price':total_price
+    })
+
+
+
+
+
+
 
 
 
@@ -346,4 +368,72 @@ def jsonfun(request):
         'a':a
     }
     return JsonResponse(stuff)
+
+
+
+
+
+
+def defPlaceOrderView(request):
+    if request.method == 'POST':
+        myorder = Order()
+        myorder.user = request.user
+        myorder.fname = request.POST.get('fname')
+        myorder.lname = request.POST.get('lname')
+        myorder.email = request.POST.get('email')
+        myorder.phone = request.POST.get('phone')
+        myorder.address = request.POST.get('address')
+        myorder.city = request.POST.get('city')
+        myorder.state = request.POST.get('state')
+        myorder.country = request.POST.get('country')
+        myorder.pincode = request.POST.get('pincode')
+
+        total_amt = 0
+        for item in Cart.objects.filter(user=request.user):
+            total_amt += item.product.selling_price * item.product_qty
+        myorder.total_amount = total_amt
+        myorder.payment_mode = request.POST.get('payment_mode')
+        myorder.payment_id = request.POST.get('payment_id')
+
+        track_no = 'payment_id_'+str(random.randint(111111,999999))
+        while Order.objects.filter(tracking_number=track_no) is None:
+            track_no = 'payment_id_'+str(random.randint(111111,999999))
+        myorder.tracking_number = track_no
+        
+        myorder.save()
+
+        order_items = Cart.objects.filter(user=request.user)
+        for item in order_items:
+            OrderItem.objects.create(
+                order = myorder,
+                product = item.product,
+                price = item.product.selling_price,
+                quantity = item.product_qty
+            )
+            
+            ordered_product = Product.objects.get(pk=item.product.id)
+            ordered_product.quantity -= item.product_qty
+            ordered_product.save()
+
+        Cart.objects.filter(user=request.user).delete()
+
+        pay_mode = request.POST.get('payment_mode')
+        if(pay_mode == 'Paid by RazorPay'):
+            return JsonResponse({'status':'Paid by RazorPay'})
+
+        placed_order = Order.objects.filter(user=request.user)
+        placed_order_items = []
+        for item in placed_order:
+            placed_order_items.append(OrderItem.objects.filter(order=item))
+        ctx = {'message':'Order Placed successfully','placed_order_items':placed_order_items}
+        
+        #add reverse redirect here
+
+        #return render(request, 'exp/user_profile.html', ctx)
+        return redirect(reverse_lazy('exp:user_profile'))
+        #return JsonResponse({'status':'Ordered Successfully'})
+
+        #return redirect(reverse_lazy('exp:place_order'))
+        #return redirect(reverse('exp:place_order'))
+    redirect('/')
         
