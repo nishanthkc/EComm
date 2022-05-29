@@ -93,4 +93,4 @@ class OrderItem(models.Model):
     quantity = models.IntegerField(null=False)
 
     def __str__(self):
-        return '{} - {}'.format(self.id, self.order)
+        return '{} _____ {} _____ {}'.format(self.id, self.order, self.order.created_at)

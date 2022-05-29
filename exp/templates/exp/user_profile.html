@@ -8,7 +8,7 @@
     <h2>{{ order }}<br></h2>
     {% for order_item in all_order_items %}
         {% if order_item.order == order %}
-            <b>{{ order_item }} <------></b>
+            <b>{{ order_item }} <------></b> {{ order_item.product }}<br>
         {% endif %}
     {% endfor %}
 {% endfor %}
