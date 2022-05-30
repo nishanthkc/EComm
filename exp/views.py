@@ -1,3 +1,4 @@
+import imp
 from itertools import product
 from unicodedata import category
 from django.shortcuts import render
@@ -8,6 +9,7 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy,reverse
 from .models import Category, Product, Cart, Wishlist, Order, OrderItem
 from django.http import JsonResponse
+from django.contrib import messages
 import time
 import random
 
@@ -191,7 +193,7 @@ class SearchView(View):
 class UserProfileView(View):
     def get(self, request):
         my_user = request.user
-        my_orders = Order.objects.filter(user=request.user)
+        my_orders = Order.objects.filter(user=request.user).order_by('-created_at')
         all_order_items = OrderItem.objects.all()
         ctx = {'my_user':my_user, 'my_orders':my_orders, 'all_order_items':all_order_items}
         return render(request, 'exp/user_profile.html', ctx)
@@ -388,12 +390,14 @@ def defPlaceOrderView(request):
         myorder.country = request.POST.get('country')
         myorder.pincode = request.POST.get('pincode')
 
+        myorder.payment_mode = request.POST.get('payment_mode')
+        myorder.payment_id = request.POST.get('payment_id')
+
         total_amt = 0
         for item in Cart.objects.filter(user=request.user):
             total_amt += item.product.selling_price * item.product_qty
         myorder.total_amount = total_amt
-        myorder.payment_mode = request.POST.get('payment_mode')
-        myorder.payment_id = request.POST.get('payment_id')
+        
 
         track_no = 'payment_id_'+str(random.randint(111111,999999))
         while Order.objects.filter(tracking_number=track_no) is None:
@@ -416,24 +420,18 @@ def defPlaceOrderView(request):
             ordered_product.save()
 
         Cart.objects.filter(user=request.user).delete()
+        messages.success(request, "Your order has been placed successfully")
 
         pay_mode = request.POST.get('payment_mode')
         if(pay_mode == 'Paid by RazorPay'):
-            return JsonResponse({'status':'Paid by RazorPay'})
-
-        placed_order = Order.objects.filter(user=request.user)
-        placed_order_items = []
-        for item in placed_order:
-            placed_order_items.append(OrderItem.objects.filter(order=item))
-        ctx = {'message':'Order Placed successfully','placed_order_items':placed_order_items}
-        
+            return JsonResponse({'status':'Your order has been placed successfully by RazorPay'})
         #add reverse redirect here
 
         #return render(request, 'exp/user_profile.html', ctx)
-        return redirect(reverse_lazy('exp:user_profile'))
+        #return redirect(reverse_lazy('exp:user_profile'))
         #return JsonResponse({'status':'Ordered Successfully'})
 
         #return redirect(reverse_lazy('exp:place_order'))
         #return redirect(reverse('exp:place_order'))
-    redirect('/')
+    return redirect('exp:user_profile')
         

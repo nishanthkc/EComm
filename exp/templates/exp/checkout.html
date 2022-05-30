@@ -9,24 +9,24 @@
 <form action="{% url 'exp:place_order' %}" method="post">
     {% csrf_token %}
     <label>First Name</label>
-    <input type="text" placeholder="" name="fname"><br><br>
+    <input type="text" required placeholder="" name="fname"><br><br>
     <label>Last Name</label>
-    <input type="text" placeholder="" name="lname"><br><br>
+    <input type="text" required placeholder="" name="lname"><br><br>
     <label>Email</label>
-    <input type="email" placeholder="" name="email"><br><br>
+    <input type="email" required placeholder="" name="email"><br><br>
     <label>Phone</label>
-    <input type="text" placeholder="" name="phone"><br><br>
+    <input type="text" required placeholder="" name="phone"><br><br>
     <label>Address</label>
-    <textarea type="text" placeholder="" name="address"></textarea><br><br>
+    <textarea type="text" required placeholder="" name="address"></textarea><br><br>
     <label>City</label>
-    <input type="text" placeholder="" name="city"><br><br>
+    <input type="text" required placeholder="" name="city"><br><br>
     <label>State</label>
-    <input type="text" placeholder="" name="state"><br><br>
+    <input type="text" required placeholder="" name="state"><br><br>
     <label>Country</label>
-    <input type="text" placeholder="" name="country"><br><br>
+    <input type="text" required placeholder="" name="country"><br><br>
     <label>Pincode</label>
-    <input type="text" placeholder="" name="pincode"><br><br>
-    <input type="hidden" value="COD" name="payment_mode">
+    <input type="text" required placeholder="" name="pincode"><br><br>
+    
 
     {% if cart %}
     {% for item in cart %}
@@ -36,6 +36,8 @@
     <br><br>
     <b><p>total price: {{ total_price }}</p></b>
     <br><br>
+
+    <input type="hidden" value="COD" name="payment_mode">
     <input type="submit" value="COD | Place Order"><br><br>
     <input type="button" value="Pay with RazorPay" class="paywithRazorPay" ><br>
 
@@ -101,7 +103,7 @@ there are no products in your cart
                                     data: data,
                                     success: function (responseC) {
                                         //swal("Congratulatoins!", responseC.razorpay_payment_id, "success").then((value) => {
-                                        swal("Congratulatoins!", "Paid by RazorPay", "success").then((value) => {
+                                        swal("Congratulatoins!", responseC.status, "success").then((value) => {
                                         window.location.href = '../user_profile'
                                         });
                                     },
@@ -120,7 +122,6 @@ there are no products in your cart
                             }
                             };
                             var rzp1 = new Razorpay(options);
-
 
                             rzp1.open();
 
