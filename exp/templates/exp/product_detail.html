@@ -4,6 +4,89 @@
 {% block content %}
         {% if my_product %}
 
+
+        <div class="detailed-des">
+            <img src={{my_product.product_image_1.url}} alt="image">
+            <div class="des-left">
+                <div>
+                    <h3 class="des-heading">{{my_product.product_name}}</h3>
+                    <p class="des-secondary">Rs. {{ my_product.selling_price }}</p>
+                    <p class="des-secondary">Tax included. Shipping calculated at checkout.</p>
+                </div>
+                <div>
+                    <h3 class="des-heading">Description</h3>
+                    <p class="des-secondary">{{my_product.product_desciption}}</p>
+                </div>
+                <div>
+                    <h3 class="des-heading">Material</h3>
+                    <p class="des-secondary">High Quality Hosiery Cotton. Durable, comfortable, soft.</p>
+                </div>
+    
+                <!-- Need to be fixed -->
+                <form action="#">
+                    
+
+
+                    {% csrf_token %}
+                    <input type="hidden" value="{{my_product.id}}" id="prod_id">
+                    <input type="hidden" value="{{my_product.selling_price}}" id="prod_s_price">
+
+
+
+
+                    <div class="des-button">
+                        <a href="#" id="add_to_cart"> Add to cart</a>
+                        <a href="#" id="move_to_wishlist">Move to Wishlist</a>
+
+
+                        <br><br>
+                        <p><input id="dec" type="button" value="-"><input id="product_qty" type="button" value="1"><input id="inc" type="button" value="+"></p>
+
+
+
+                        <!--
+                        <div class="dec-cart-buttons">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="dec-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+        
+                            <p>1</p>
+        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="dec-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6" />
+                            </svg>
+                        </div>
+                        -->
+                        <div>
+                            <p class="des-heading">Categories: </p>
+                            <p class="des-secondary">High Quality Hosiery Cotton. Durable, comfortable, soft.</p>
+                        </div>
+                        <div>
+                            <p class="des-heading">Availability :</p>
+                            <p class="des-secondary">In Stock</p>
+                        </div>
+                    </div>
+                </form>    
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--
         <p><img src={{my_product.product_image_1.url}} height="200px" width="200px"></p>
         <p><b>{{my_product.product_name}}</b>: {{my_product.product_desciption}}</p>
         <p>Price : {{ my_product.selling_price }}</p>
@@ -17,6 +100,7 @@
         </form>
         <p id="come"></p>
         ---------------------------------------------
+-->
         {% else %}
         <p>no products</p>
         {% endif %}

@@ -375,3 +375,61 @@ html {
 
 
 
+/* List view */
+.list-view{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 10rem;
+  margin: 5rem;
+  flex-wrap: wrap;
+}
+.list-view p{
+  font-size: 1.8rem;
+}
+.list-image{
+  width: 100%;
+  height: auto;
+}
+
+/* detailed des */
+.detailed-des{
+display: flex;
+flex-direction: row;
+justify-content: center;
+gap: 10rem;
+margin: 10rem;
+}
+.des-heading{
+  font-size: 2.2rem;
+}
+
+.des-secondary{
+  font-size: 1.6rem;
+  color: #5a5a5a;
+}
+
+.des-left{
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+.des-button a{
+  text-decoration: none;
+  color: #fff;
+  background-color: #000;
+  padding: 1rem;
+  border-radius: 1rem;
+  font-size: 1.4rem;
+}
+
+.dec-cart-buttons{
+  display: flex;
+  flex-direction: column;
+}
+.dec-icon{
+  width: 2rem;
+}
+
+

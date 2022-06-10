@@ -4,12 +4,17 @@
 {% block content %}
 
 {% if products %}
-{% for product in products %}
 
-<p><a href="{% url 'exp:product_detail' product.id %}"><img src={{product.product_image_1.url}} height="50px" width="50px"><b>{{product.product_name}}</b></a>: {{product.product_desciption}}</p>
-<p>Price : {{ product.selling_price }}</p>
----------------------------------------------
-{% endfor %}
+<div class="list-view">
+    {% for product in products %}
+        <div>
+        <a href="{% url 'exp:product_detail' product.id %}"><img src={{product.product_image_1.url}} alt="Image" class="list-image"></a>
+        <p>{{product.product_name}}</p>
+        <p>Rs. {{ product.selling_price }}</p>
+        </div>
+    {% endfor %}
+</div>
+
 {% else %}
 <p>no products</p>
 {% endif %}
