@@ -2,7 +2,7 @@
 
 A fully functional ready to deploy E-Commerce Website, that sells Fashion products.
 
-Features are as follows:<br>
+Features are as follows: <br>
 -> Login System.<br>
 -> Login activation using emails.<br>
 -> Browse through different products and categories.<br>
